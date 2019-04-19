@@ -22,10 +22,12 @@ def blogs():
     blog_id = request.args.get('id')
     if blog_id:
         blog = Blog.query.filter_by(id=blog_id).all()
+        home = False
     else:
         blog = Blog.query.all()
+        home = True
     
-    return render_template('blogpost.html', title="Build-A-Blog!", blogs=blog)
+    return render_template('blogpost.html', title="Build-A-Blog!", blogs=blog, home=home)
 
 @app.route('/newpost', methods=['POST', 'GET'])
 def new_post():

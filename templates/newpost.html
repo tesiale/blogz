@@ -9,21 +9,21 @@
             <label>Title for your new blog: <br>
                 <input type="text" name="blog_title" value="{{blog_title}}"/>
             </label>
-        </p>
-        {% if title_error %}
+
+            {% if title_error %}
             <p class='error'>{{title_error}}</p>
-        {% endif %}
-
-        <p>
-            <label>Your new blog: <br>
-            <textarea name="blog_body" value={{blog_body}}></textarea>
-            </label>
+            {% endif %}
         </p>
-        {% if body_error %}
-            <p class='error'>{{body_error}}</p>
-        {% endif %}
+        <p>
+        <label>Your new blog: <br>
+        <textarea name="blog_body" rows="10" cols="40" value={{blog_body}}></textarea>
+        </label>
 
-        <input type="submit"value="Add Blog"/>
+        {% if body_error %}
+        <p class='error'>{{body_error}}</p>
+        {% endif %}
+        </p>
+        <p><input type="submit"value="Add Blog"/></p>
     </form>
 
 {% endblock %}
