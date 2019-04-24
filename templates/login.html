@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <h1>Login</h1>
+
+    <!--Display Flash Error Messages-->
+    {% with messages = get_flashed_messages() %}
+        <ul>
+            {% for message in messages %}
+                <li>{{message}}</li>
+            {% endfor %}
+        </ul>
+    {% endwith %}
+
+    <!--Login form-->
+    <form method="POST">
+        <p><label>Username <input type="text" name="username" value="{{username}}"/></label></p>
+        <p><label>Password <input type="password" name="password"/></label></p>
+        <p><input type="submit"/></p>
+    </form>
+
+    <!--Link new users to signup page-->
+    <p>New User? <a href="signup">Create an account</a></p>
+
+{% endblock %}

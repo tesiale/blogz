@@ -1,53 +1,64 @@
 body{
     background-color: lavender;    
 }
-.error {
-    color: red;
-    margin: 0;
-}
+
 h1 {
     text-align: center;
     text-transform: uppercase;
     letter-spacing: 3px;
 }
 
-.header{
-    font-size: 50px;
-}
-.title{
-    text-transform: uppercase;
+nav{
     text-align: center;
 }
-.body{
-    text-align: center;
-}
+
 nav a{
     margin-right: 5px;
     background-color: black;
     color: white;
     padding: 3px;
 }
+
 a:link{
     text-decoration: none;
 }
+
 a:hover{
     text-decoration: underline;
 }
 
-nav{
+.body{
     text-align: center;
 }
+
+.error {
+    color: red;
+    margin: 0;
+    display: inline;
+}
+.header{
+    font-size: 50px;
+}
+
 .main {
     width: 50%;
     margin: 10px auto;
     padding: 20px;
+    text-align: center;
 }
-.title_link{
-    color: hotpink;
-    text-transform: uppercase;
-}
+
 .post{
     margin: 20px 0px;
     padding: 10px;
     background-color: lightcyan;
+}
+
+.title{
+    text-transform: uppercase;
+    text-align: center;
+}
+
+.title_link{
+    color: hotpink;
+    text-transform: uppercase;
 }

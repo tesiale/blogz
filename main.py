@@ -3,47 +3,59 @@ from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 app.config['DEBUG'] = True
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://build-a-blog:password@localhost:8889/build-a-blog'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://blogz:password@localhost:8889/blogz'
 app.config['SQLALCHEMY_ECHO'] = True
 db = SQLAlchemy(app)
+app.secret_key = "gibberish"
 
 class Blog(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(120))
     body = db.Column(db.String(250))
-    owner_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
-    def __init__(self, title, body, owner):
+    def __init__(self, title, body, user):
         self.title = title
         self.body = body
-        self.owner = owner
+        self.user = user
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(25))
     password = db.Column(db.String(25))
-    blogs = db.relationship('Blog', backref='owner')
+    blogs = db.relationship('Blog', backref='user')
 
     def __init__(self, username, password):
         self.username = username
         self.password = password
+
+@app.before_request
+def require_login():
+    allowed_routes = ['login', 'signup', 'index']
+    if request.endpoint not in allowed_routes and 'username' not in session:
+        return redirect('/login')
+
+@app.route('/')
+def index():
+    display_users = User.query.all()
+    return render_template('index.html', title="Blogz | Home", users=display_users)
 
 @app.route('/blog')
 def blogs():
     blog_id = request.args.get('id')
     if blog_id:
         blog = Blog.query.filter_by(id=blog_id).all()
-        home = False
+        main = False
     else:
         blog = Blog.query.all()
-        home = True
+        main = True
     
-    return render_template('blogpost.html', title="Build-A-Blog!", blogs=blog, home=home)
+    return render_template('blogpost.html', title="Blogz | Blogs", blogs=blog, main=main)
 
 @app.route('/newpost', methods=['POST', 'GET'])
 def new_post():
-    owner = User.query.filter_by(user_id=['user_id']).first()
+    user = User.query.filter_by(username=['username']).first()
 
     if request.method == 'POST':
         blog_title = request.form['blog_title']
@@ -58,17 +70,22 @@ def new_post():
             body_error = "Please enter in a body"
 
         if not title_error and not body_error:
-            new_blog = Blog(blog_title, blog_body, owner)
+            new_blog = Blog(blog_title, blog_body, user)
             db.session.add(new_blog)
             db.session.commit()
             return redirect('/blog?id=' + str(new_blog.id))
         else:
-            return render_template('newpost.html', title="New Post", title_error=title_error, body_error=body_error, blog_title=blog_title, blog_body=blog_body)
+            return render_template('newpost.html', 
+            title="New Post", 
+            title_error=title_error, 
+            body_error=body_error, 
+            blog_title=blog_title, 
+            blog_body=blog_body)
     else:
-        return render_template('newpost.html', title="New Post")
+        return render_template('newpost.html', title="Blogz | New Post")
 
 
-@app.route('/signup')
+@app.route('/signup', methods=['POST', 'GET'])
 def signup():
     if request.method == 'POST':
         username = request.form['username']
@@ -110,35 +127,35 @@ def signup():
             title="Blogz | Sign-Up",
             username_error=u_error,
             password_error=p_error,
-            vpassword_error=v_error,
+            verify_error=v_error,
             username=username)
+    else:
+        return render_template('signup.html', title="Blogz | Sign-Up")
 
-@app.route('/login')
+@app.route('/login', methods=['POST', 'GET'])
 def login():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
+
         user = User.query.filter_by(username=username).first()
+
         if user and user.password == password:
             session['username'] = username
             return redirect('/newpost')
         elif not user:
-            flash('')
+            flash('Username does not exist')
             return redirect('/login')
         else:
-            flash('')
+            flash('Invalid Password')
             return redirect('/login')
 
-    return render_template('login.html')
+    return render_template('login.html', title='Blogz | Login')
 
-@app.route('/index')
-def index():
-
-
-@app.route("/logout", methods=['POST'])
+@app.route('/logout')
 def logout():
-    del session['user']
-    return redirect("/")
+    del session['username']
+    return redirect('/blog')
 
 if __name__ == '__main__':
     app.run()

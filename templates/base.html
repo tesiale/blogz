@@ -2,18 +2,31 @@
 <html>
     <head>
         <title>{{title}}</title>
-        <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/style.css') }}">
+        <link rel= "stylesheet" href= "{{ url_for('static', filename='styles/style.css') }}">
     </head>
-<body>
-    <h1 class="header">Build-A-Blog</h1>
-    <nav>
-        <a href="blog">Main Blog</a>
-        <a href="newpost">Add a Blog</a>
-    </nav>
-    <div class="main">
-            {% block content %}
-            {% endblock %}
-    </div>
-    
-</body>
+    <body>
+        <h1 class="header">Build-A-Blog</h1>
+        <div class="navigation_bar">
+            <nav>
+                <a href="/">Home</a>
+                <a href="/blog">All Posts</a>
+                <a href="/newpost">New Post</a>
+            </nav>
+            <nav>
+                {% if session['username'] %}
+                    Logged in: <strong>{{session['username']}}</strong>
+                    <a href="/logout">Logout</a>
+                {% else %}
+                    <a href="/login">Login</a>
+                {% endif %}
+                
+            </nav>
+        </div>
+        
+        <div class="main">
+                {% block content %}
+                {% endblock %}
+        </div>
+        
+    </body>
 </html>
