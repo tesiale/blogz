@@ -32,7 +32,7 @@ class User(db.Model):
 
 @app.before_request
 def require_login():
-    allowed_routes = ['login', 'signup', 'index']
+    allowed_routes = ['login', 'signup', 'index', 'blogs', 'static']
     if request.endpoint not in allowed_routes and 'username' not in session:
         return redirect('/login')
 
@@ -44,6 +44,7 @@ def index():
 @app.route('/blog')
 def blogs():
     blog_id = request.args.get('id')
+    blog_user = request.args.get('user')
     if blog_id:
         blog = Blog.query.filter_by(id=blog_id).all()
         main = False
@@ -149,8 +150,8 @@ def login():
         else:
             flash('Invalid Password')
             return redirect('/login')
-
-    return render_template('login.html', title='Blogz | Login')
+    else:
+        return render_template('login.html', title='Blogz | Login')
 
 @app.route('/logout')
 def logout():

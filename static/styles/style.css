@@ -1,15 +1,16 @@
 body{
-    background-color: lavender;    
+    background-color: lavender;
 }
 
 h1 {
     text-align: center;
     text-transform: uppercase;
-    letter-spacing: 3px;
+    letter-spacing: 4px;
 }
 
 nav{
     text-align: center;
+    padding: 0 0 10px 0;
 }
 
 nav a{
@@ -27,6 +28,12 @@ a:hover{
     text-decoration: underline;
 }
 
+li{
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
 .body{
     text-align: center;
 }
@@ -38,19 +45,33 @@ a:hover{
 }
 .header{
     font-size: 50px;
+    color: #C71585;
 }
 
 .main {
     width: 50%;
     margin: 10px auto;
-    padding: 20px;
+    padding: 10px;
+    background-color: #F5FFFA;
+    border-radius: 25px;
+    overflow: auto;
     text-align: center;
 }
 
 .post{
     margin: 20px 0px;
     padding: 10px;
-    background-color: lightcyan;
+    background-color: #F0F8FF;
+    border-radius: 25px;
+}
+
+.post a{
+    color: #4682B4;
+    text-transform: uppercase;
+}
+
+.post p{
+    color: #DB7093;
 }
 
 .title{
@@ -58,7 +79,6 @@ a:hover{
     text-align: center;
 }
 
-.title_link{
-    color: hotpink;
-    text-transform: uppercase;
+.user_list a{
+    color: #DB7093;
 }
