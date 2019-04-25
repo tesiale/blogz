@@ -6,14 +6,16 @@
 
     {% if main == False %}
         {% for blog in blogs %}
-        <h2 class='title'>{{blog.title}}</h1>
-        <p class='body'>{{blog.body}}</p>
+            <h2 class='title'>{{blog.title}}</h1>
+            <p class='body'>{{blog.body}}</p>
+            <p><sub>written by <a href="/blog?user={{user.username}}">{{user.username}}</a></sub></p>
         {% endfor %}
     {% else %}
         {% for blog in blogs %}
         <div class="post">
             <h2><a href="/blog?id={{blog.id}}">{{blog.title}}</a></h2>
             <p>{{blog.body}}</p>
+            <p><sub>written by <a href="/blog?user={{user.username}}">{{user.username}}</a></sub></p>
         </div>
         {% endfor %}
     {% endif %}

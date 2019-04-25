@@ -45,18 +45,25 @@ def index():
 def blogs():
     blog_id = request.args.get('id')
     blog_user = request.args.get('user')
-    if blog_id:
+        
+    if blog_user:
+        user = User.query.filter_by(username=blog_user).first()
+        blog = Blog.query.filter_by(user_id=user.id).all()
+        return render_template('singleUser.html', title="Blogz | Blogs", blogs=blog, user=user)
+    elif blog_id:
         blog = Blog.query.filter_by(id=blog_id).all()
         main = False
+        return render_template('blogpost.html', title="Blogz | Blogs", blogs=blog, main=main, user=user)
     else:
         blog = Blog.query.all()
         main = True
+        return render_template('blogpost.html', title="Blogz | Blogs", blogs=blog, main=main, user=user)
     
-    return render_template('blogpost.html', title="Blogz | Blogs", blogs=blog, main=main)
+    
 
 @app.route('/newpost', methods=['POST', 'GET'])
 def new_post():
-    user = User.query.filter_by(username=['username']).first()
+    user = User.query.filter_by(username=session['username']).first()
 
     if request.method == 'POST':
         blog_title = request.form['blog_title']
