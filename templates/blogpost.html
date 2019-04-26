@@ -2,21 +2,24 @@
 
 {% block content %}
 
-<h1>All Blog Posts!</h1>
-
-    {% if main == False %}
-        {% for blog in blogs %}
-            <h2 class='title'>{{blog.title}}</h1>
-            <p class='body'>{{blog.body}}</p>
-            <p><sub>written by <a href="/blog?user={{user.username}}">{{user.username}}</a></sub></p>
-        {% endfor %}
+    {% if show_all == False %}
+        {% if blogs %}
+            <h2 class='title'>{{blogs.title}}</h1>
+            <p class='body'>{{blogs.body}}</p>
+            <sub>written by <a href="/blog?user={{user.username}}">{{user.username}}</a></sub>
+        {% endif %}
     {% else %}
+        <h1>All Blog Posts!</h1>
         {% for blog in blogs %}
-        <div class="post">
-            <h2><a href="/blog?id={{blog.id}}">{{blog.title}}</a></h2>
-            <p>{{blog.body}}</p>
-            <p><sub>written by <a href="/blog?user={{user.username}}">{{user.username}}</a></sub></p>
-        </div>
+            <div class="post">
+                <h2><a href="/blog?id={{blog.id}}">{{blog.title}}</a></h2>
+                <p>{{blog.body}}</p>
+                {% for user in users %}
+                    {% if user.id == blog.user_id %}
+                        <sub>written by <a href="blog?user={{user.username}}">{{user.username}}</a></sub>
+                    {%endif%}
+                {%endfor%}
+            </div>
         {% endfor %}
     {% endif %}
 

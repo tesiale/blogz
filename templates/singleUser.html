@@ -2,13 +2,14 @@
 
 {% block content %}
 
-<h1>All Blog Posts!</h1>
+{% if blogs %}
+    <h1>{{user.username}}'s Blog Posts</h1>
     {% for blog in blogs %}
         <div class="post">
             <h2><a href="/blog?id={{blog.id}}">{{blog.title}}</a></h2>
             <p>{{blog.body}}</p>
-            <p><sub>written by <a href="/blog?user={{user.username}}">{{user.username}}</a></sub></p>
+            <sub>written by <a href="/blog?user={{user.username}}">{{user.username}}</a></sub>
         </div>
     {% endfor %}
-
+{% endif %}
 {% endblock %}

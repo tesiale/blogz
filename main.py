@@ -51,13 +51,15 @@ def blogs():
         blog = Blog.query.filter_by(user_id=user.id).all()
         return render_template('singleUser.html', title="Blogz | Blogs", blogs=blog, user=user)
     elif blog_id:
-        blog = Blog.query.filter_by(id=blog_id).all()
-        main = False
-        return render_template('blogpost.html', title="Blogz | Blogs", blogs=blog, main=main, user=user)
+        blog = Blog.query.filter_by(id=blog_id).first()
+        user = User.query.filter_by(id=blog.user_id).first()
+        show_all = False
+        return render_template('blogpost.html', title="Blogz | Blogs", blogs=blog, show_all=show_all, user=user)
     else:
         blog = Blog.query.all()
-        main = True
-        return render_template('blogpost.html', title="Blogz | Blogs", blogs=blog, main=main, user=user)
+        user = User.query.all()
+        show_all = True
+        return render_template('blogpost.html', title="Blogz | Blogs", blogs=blog, show_all=show_all, users=user)
     
     
 
